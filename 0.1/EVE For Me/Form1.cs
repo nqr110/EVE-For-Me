@@ -14,11 +14,21 @@ namespace EVE_For_Me
 
     public partial class Form1 : Form
     {
-        // test
-
         // -------------------------------------------------------------------------------------
         // 全局初始化部分
-        private readonly string Tablpage3Url = "https://www.ceve-market.org/home/";
+
+        // 市场
+        private readonly string ShiChangUrl = "https://www.ceve-market.org/home/";
+        // 蓝图计算
+        private readonly string LanTuUrl = "http://www.ceve-industry.cn/";
+        // 合同货柜分析
+        private readonly string HeTongUrl = "https://tools.ceve-market.org/contract/";
+        // 跳跃导航计算
+        private readonly string TiaoYueUrl = "https://eve.sgfans.org/navigator/jump_path_layout";
+
+        // 使用字典管理所有需要延迟加载的Tab页
+        private Dictionary<TabPage, (string Url, WebView2 WebView)> webViewTabs = new Dictionary<TabPage, (string, WebView2)>();
+
         // -------------------------------------------------------------------------------------
 
         public Form1()
@@ -26,12 +36,68 @@ namespace EVE_For_Me
             InitializeComponent();
             // 注册 tab 切换事件（Tabpage3延迟初始化使用）
             tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+
+            // 初始化字典配置
+            // 可以在这里修改Page页所对应的Url
+            webViewTabs.Add(tabPage3, (ShiChangUrl, null));
+            webViewTabs.Add(tabPage4, (LanTuUrl, null));
+            webViewTabs.Add(tabPage5, (TiaoYueUrl, null));
+            webViewTabs.Add(tabPage6, (HeTongUrl, null));
+        }
+
+
+        // 统一的Tab页切换处理
+        // 统一在这里延迟初始化
+        private async void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var currentTab = tabControl1.SelectedTab;
+
+            if (webViewTabs.TryGetValue(currentTab, out var tabInfo))
+            {
+                if (tabInfo.WebView == null)
+                {
+                    await InitializeWebView(currentTab, tabInfo.Url);
+                }
+            }
+        }
+
+        // 通用的WebView初始化方法
+        private async Task InitializeWebView(TabPage tabPage, string url)
+        {
+            var webView = new WebView2
+            {
+                Dock = DockStyle.Fill,
+                Visible = false  // 初始隐藏防止闪烁
+            };
+
+            try
+            {
+                tabPage.SuspendLayout();
+                tabPage.Controls.Add(webView);
+                await webView.EnsureCoreWebView2Async(null);
+                webView.CoreWebView2.Navigate(url);
+
+                // 更新字典中的WebView实例
+                webViewTabs[tabPage] = (url, webView);
+                webView.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"初始化{tabPage.Text}失败: {ex.Message}");
+                tabPage.Controls.Remove(webView);
+                webView.Dispose();
+            }
+            finally
+            {
+                tabPage.ResumeLayout();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
+
 
         // 切换Form2页面
         private void button1_Click(object sender, EventArgs e)
@@ -42,11 +108,6 @@ namespace EVE_For_Me
             // 显示Form2
             form2.Show();
             this.Hide();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -72,56 +133,6 @@ namespace EVE_For_Me
         private void button4_Click_1(object sender, EventArgs e)
         {
 
-        }
-        // WebView2 控件声明
-        private WebView2 webViewTab3; 
-        private async void InitializeWebViewForTab3()
-        {
-            if (webViewTab3 == null)
-            {
-                webViewTab3 = new WebView2();
-                webViewTab3.Dock = DockStyle.Fill;
-                tabPage3.Controls.Add(webViewTab3);
-
-                try
-                {
-                    await webViewTab3.EnsureCoreWebView2Async(null);
-                    webViewTab3.CoreWebView2.Navigate(Tablpage3Url); // 替换成你的目标网址
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"初始化失败: {ex.Message}");
-                }
-            }
-        }
-
-        // 延迟初始化
-        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-            if (tabControl1.SelectedTab == tabPage3 && webViewTab3 == null)
-            {
-                InitializeWebViewForTab3();
-            }
-        }
-        // 重置 WebView2 控件
-        private void button5_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (webViewTab3 != null)
-                {
-                    tabPage3.Controls.Remove(webViewTab3);
-                    webViewTab3.Dispose();
-                    webViewTab3 = null;
-                }
-
-                InitializeWebViewForTab3();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"重置失败: {ex.Message}");
-            }
         }
 
         private void button6_Click(object sender, EventArgs e)
