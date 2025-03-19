@@ -191,11 +191,6 @@ namespace EVE_For_Me
 
         }
 
-        private void button4_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
         private void button6_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -211,5 +206,29 @@ namespace EVE_For_Me
 
         }
 
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPage3;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPage4;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPage5;
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPage6;
+        }
     }
 }
