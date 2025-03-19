@@ -316,6 +316,7 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "关于：\r\n  1.本程序无任何形式的外挂行为\r\n\r\n\r\n\r\n    nqr_lty  执行版本，仅作学习和交流\r\n    如有疑问请联系QQ：3390413933" +
     "\r\n";
+            this.label4.Click += new System.EventHandler(this.label4_Click_1);
             // 
             // Form1
             // 

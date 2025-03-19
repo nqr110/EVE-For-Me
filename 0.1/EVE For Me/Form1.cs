@@ -230,5 +230,10 @@ namespace EVE_For_Me
         {
             tabControl1.SelectedTab = tabPage6;
         }
+
+        private void label4_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
