@@ -45,6 +45,7 @@ namespace EVE_For_Me
             webViewTabs.Add(tabPage6, (HeTongUrl, null));
         }
 
+        // -------------------------------------------------------------------------------------
 
         // 统一的Tab页切换处理
         // 统一在这里延迟初始化
@@ -93,6 +94,66 @@ namespace EVE_For_Me
             }
         }
 
+        // 统一处理Tab页重新加载
+        private async void ReloadTabPage(TabPage tabPage)
+        {
+            if (webViewTabs.TryGetValue(tabPage, out var tabInfo))
+            {
+                string url = tabInfo.Url;
+                WebView2 webView = tabInfo.WebView;
+
+                if (webView != null)
+                {
+                    try
+                    {
+                        // 确保WebView2核心已初始化
+                        if (webView.CoreWebView2 == null)
+                        {
+                            await webView.EnsureCoreWebView2Async(null);
+                        }
+                        webView.CoreWebView2.Navigate(url);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"重新加载{tabPage.Text}失败: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    // 如果WebView未初始化，则执行初始化流程
+                    await InitializeWebView(tabPage, url);
+                }
+            }
+        }
+
+        // 修改按钮点击事件处理程序：
+
+        // button2对应tabPage3（市场）
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ReloadTabPage(tabPage3);
+        }
+
+        // button5对应tabPage4（蓝图计算）
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ReloadTabPage(tabPage4);
+        }
+
+        // button7对应tabPage5（跳跃导航）
+        private void button7_Click(object sender, EventArgs e)
+        {
+            ReloadTabPage(tabPage5);
+        }
+
+        // button8对应tabPage6（合同分析）
+        private void button8_Click(object sender, EventArgs e)
+        {
+            ReloadTabPage(tabPage6);
+        }
+
+        // -------------------------------------------------------------------------------------
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -139,5 +200,16 @@ namespace EVE_For_Me
         {
             this.Close();
         }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
