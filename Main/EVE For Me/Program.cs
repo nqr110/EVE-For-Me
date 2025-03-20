@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+[assembly: SupportedOSPlatform("windows")] // 声明整个程序仅支持Windows
 
 namespace EVE_For_Me
 {

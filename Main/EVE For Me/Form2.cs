@@ -16,19 +16,23 @@ using Newtonsoft.Json;
 
 namespace EVE_For_Me
 {
+
+    // 声明此窗体仅支持Windows平台
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+
     public partial class Form2 : Form
     {
         // -------------------------------------------------------------------------------------
         // 初始化
-        private Form1 _form1;
+        private readonly Form1 _form1;
         // 修改为实际Excel路径
         private const string ExcelPath = @"..\..\..\..\EVE For Me\Database\evedata.xlsx";
         // 添加新变量存储当前TypeID
         private int currentTypeId = -1;
         // 添加HttpClient实例
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient = new();
         // -------------------------------------------------------------------------------------
-        private string GetCellValue(WorkbookPart workbookPart, Cell cell)
+        private static string GetCellValue(WorkbookPart workbookPart, Cell cell)
         {
             if (cell?.CellValue == null) return string.Empty;
 
@@ -42,20 +46,16 @@ namespace EVE_For_Me
             }
             return value;
         }
-        private int FindTypeIdByName(string itemName)
+        private static int FindTypeIdByName(string itemName)
         {
             using var doc = SpreadsheetDocument.Open(ExcelPath, false);
             var workbookPart = doc.WorkbookPart;
             var worksheetPart = workbookPart.WorksheetParts.First();
-            var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1); // 跳过标题行
+            var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
 
             foreach (var row in rows)
             {
                 var cells = row.Elements<Cell>().ToList();
-
-                // 假设：
-                // 第1列 (A列) 是 TypeID
-                // 第2列 (B列) 是物品名称
                 if (cells.Count >= 2 &&
                     GetCellValue(workbookPart, cells[1]).Equals(itemName, StringComparison.OrdinalIgnoreCase))
                 {

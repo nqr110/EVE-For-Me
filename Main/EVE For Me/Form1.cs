@@ -12,6 +12,9 @@ using Microsoft.Web.WebView2.WinForms;
 namespace EVE_For_Me
 {
 
+    // 声明此窗体仅支持Windows平台
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+
     public partial class Form1 : Form
     {
         // -------------------------------------------------------------------------------------
