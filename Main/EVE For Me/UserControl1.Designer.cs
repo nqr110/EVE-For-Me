@@ -44,6 +44,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.White;
             Controls.Add(label1);
             Name = "UserControl1";
             Size = new System.Drawing.Size(641, 461);

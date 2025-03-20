@@ -13,6 +13,9 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System.Net.Http;
 using Newtonsoft.Json;
 
+// 在Form2.cs文件顶部的using区域添加
+using DrawColor = System.Drawing.Color;  // 给System.Drawing.Color定义别名
+
 
 namespace EVE_For_Me
 {
@@ -52,11 +55,43 @@ namespace EVE_For_Me
             LoadUserControl<UserControl1>();
         }
         // -------------------------------------------------------------------------------------
+        // 布局初始化方法
+        private void InitializeLayout()
+        {
+            // 设置左侧按钮容器属性
+            panel2.Width = 120;  // 固定宽度（可根据需求调整）
+            panel2.Dock = DockStyle.Left;
+            panel2.BackColor = SystemColors.Control;
 
+            // 设置右侧内容面板属性
+            //panel1.Dock = DockStyle.Fill;
+            //panel1.BackColor = DrawColor.White;
+            // 调整控件层级顺序（确保panel1在panel2之后加载）
+            Controls.SetChildIndex(panel1, 0);
+            Controls.SetChildIndex(panel2, 1);
+
+            //// 设置按钮在panel2内的布局
+            //int buttonHeight = 50;
+            //int spacing = 10;
+            //foreach (System.Windows.Forms.Control ctrl in panel2.Controls)
+            //{
+            //    if (ctrl is Button btn)
+            //    {
+            //        btn.Height = buttonHeight;
+            //        btn.Dock = DockStyle.Top;
+            //        btn.BringToFront();
+            //    }
+            //}
+            //// 添加间隔（可选）
+            //panel2.Controls.Add(new Panel { Height = spacing, Dock = DockStyle.Top });
+        }
+
+        // -------------------------------------------------------------------------------------
         public Form2(Form1 form1)
         {
             InitializeComponent();
-
+            // 布局初始化方法
+            InitializeLayout();
             // 正确接收参数
             _form1 = form1;
             // 关闭本窗口后可以显示Form1
@@ -94,6 +129,14 @@ namespace EVE_For_Me
 
         }
 
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

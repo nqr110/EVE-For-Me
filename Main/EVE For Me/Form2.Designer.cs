@@ -34,21 +34,25 @@
             button4 = new System.Windows.Forms.Button();
             button2 = new System.Windows.Forms.Button();
             button1 = new System.Windows.Forms.Button();
+            panel2 = new System.Windows.Forms.Panel();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Location = new System.Drawing.Point(175, 2);
+            panel1.BackColor = System.Drawing.Color.White;
+            panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel1.Location = new System.Drawing.Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(807, 559);
+            panel1.Size = new System.Drawing.Size(984, 561);
             panel1.TabIndex = 6;
             panel1.Paint += panel1_Paint;
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(3, 128);
+            button3.Location = new System.Drawing.Point(0, 104);
             button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(166, 57);
+            button3.Size = new System.Drawing.Size(120, 47);
             button3.TabIndex = 7;
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
@@ -56,18 +60,19 @@
             // 
             // button4
             // 
-            button4.Location = new System.Drawing.Point(3, 191);
+            button4.Location = new System.Drawing.Point(0, 157);
             button4.Name = "button4";
-            button4.Size = new System.Drawing.Size(166, 57);
+            button4.Size = new System.Drawing.Size(120, 47);
             button4.TabIndex = 8;
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(3, 65);
+            button2.Location = new System.Drawing.Point(0, 52);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(166, 57);
+            button2.Size = new System.Drawing.Size(120, 47);
             button2.TabIndex = 10;
             button2.Text = "EVE查询";
             button2.UseVisualStyleBackColor = true;
@@ -75,13 +80,25 @@
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(3, 2);
+            button1.Location = new System.Drawing.Point(1, 1);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(166, 57);
+            button1.Size = new System.Drawing.Size(119, 47);
             button1.TabIndex = 11;
             button1.Text = "主页";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(button1);
+            panel2.Controls.Add(button3);
+            panel2.Controls.Add(button2);
+            panel2.Controls.Add(button4);
+            panel2.Location = new System.Drawing.Point(3, 2);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(120, 556);
+            panel2.TabIndex = 12;
+            panel2.Paint += panel2_Paint;
             // 
             // Form2
             // 
@@ -89,16 +106,14 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(984, 561);
-            Controls.Add(button1);
-            Controls.Add(button2);
-            Controls.Add(button4);
-            Controls.Add(button3);
+            Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4);
             Name = "Form2";
             Text = "Form2";
             Load += Form2_Load;
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -108,5 +123,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel2;
     }
 }
