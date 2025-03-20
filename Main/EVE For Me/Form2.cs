@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Windows;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 
 namespace EVE_For_Me
@@ -20,7 +22,11 @@ namespace EVE_For_Me
         // 初始化
         private Form1 _form1;
         // 修改为实际Excel路径
-        private const string ExcelPath = @"..\..\..\..\EVE For Me\Database\evedata.xlsx";                                                                            
+        private const string ExcelPath = @"..\..\..\..\EVE For Me\Database\evedata.xlsx";
+        // 添加新变量存储当前TypeID
+        private int currentTypeId = -1;
+        // 添加HttpClient实例
+        private readonly HttpClient _httpClient = new HttpClient();
         // -------------------------------------------------------------------------------------
         private string GetCellValue(WorkbookPart workbookPart, Cell cell)
         {
@@ -59,6 +65,7 @@ namespace EVE_For_Me
             return -1;
         }
 
+
         private void button1_Click_1(object sender, EventArgs e)
         {
             try
@@ -67,15 +74,26 @@ namespace EVE_For_Me
                 if (string.IsNullOrEmpty(itemName))
                 {
                     label1.Text = "请输入物品名称";
+                    currentTypeId = -1;
                     return;
                 }
 
                 var typeId = FindTypeIdByName(itemName);
-                label1.Text = typeId > 0 ? $"TypeID: {typeId}" : "未找到该物品";
+                if (typeId > 0)
+                {
+                    currentTypeId = typeId;
+                    label1.Text = $"TypeID: {typeId}";
+                }
+                else
+                {
+                    currentTypeId = -1;
+                    label1.Text = "未找到该物品";
+                }
             }
             catch (Exception ex)
             {
                 label1.Text = $"错误: {ex.Message}";
+                currentTypeId = -1;
             }
         }
 
@@ -115,6 +133,40 @@ namespace EVE_For_Me
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (currentTypeId <= 0)
+                {
+                    label2.Text = "请先获取有效TypeID";
+                    label3.Text = "";
+                    return;
+                }
+
+                string apiUrl = $"https://www.ceve-market.org/api/market/region/10000002/type/{currentTypeId}.json";
+
+                var response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                dynamic data = JsonConvert.DeserializeObject(json);
+
+                label2.Text = $"Buy Max: {data.buy.max}";
+                label3.Text = $"Sell Min: {data.sell.min}";
+            }
+            catch (HttpRequestException ex)
+            {
+                label2.Text = $"网络请求失败: {ex.Message}";
+                label3.Text = "";
+            }
+            catch (Exception ex)
+            {
+                label2.Text = $"发生错误: {ex.Message}";
+                label3.Text = "";
+            }
         }
     }
 }
