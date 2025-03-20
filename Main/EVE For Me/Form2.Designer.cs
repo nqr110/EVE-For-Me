@@ -69,7 +69,7 @@
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(201, 104);
+            button2.Location = new System.Drawing.Point(201, 106);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(96, 36);
             button2.TabIndex = 3;
@@ -80,7 +80,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(361, 59);
+            label2.Location = new System.Drawing.Point(361, 56);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(43, 17);
             label2.TabIndex = 4;
@@ -89,7 +89,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(361, 104);
+            label3.Location = new System.Drawing.Point(361, 114);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(43, 17);
             label3.TabIndex = 5;
@@ -99,7 +99,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(933, 638);
+            ClientSize = new System.Drawing.Size(984, 561);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(button2);

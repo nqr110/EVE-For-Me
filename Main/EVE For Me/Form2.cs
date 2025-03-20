@@ -65,7 +65,7 @@ namespace EVE_For_Me
             return -1;
         }
 
-
+        // 本地数据查询按钮
         private void button1_Click_1(object sender, EventArgs e)
         {
             try
@@ -126,15 +126,13 @@ namespace EVE_For_Me
         }
 
 
-
-
-
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
 
+
+        // 网络API访问按钮
         private async void button2_Click(object sender, EventArgs e)
         {
             try
