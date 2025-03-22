@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,10 +20,67 @@ namespace EVE_For_Me
         private readonly HttpClient _httpClient = new HttpClient();
         private const string EvEDataPath = @"..\..\..\..\EVE For Me\Database\evedata.xlsx";
         private const string OrdinaryOrePath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_ordinary ore.xlsx";
+        private bool _isFirstLoad = true;  // 添加首次加载标记
 
         public UserControl4()
         {
             InitializeComponent();
+
+            // 订阅TabControl切换事件
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+        }
+
+
+        // Tab页切换事件处理
+        private async void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabPage2)
+            {
+                await ExecuteWebDataLoading();
+            }
+        }
+
+        // 统一的网络数据加载方法
+        private async Task ExecuteWebDataLoading()
+        {
+            try
+            {
+                if (!_isFirstLoad) return;
+                _isFirstLoad = false;
+
+                label5.Text = "正在加载市场数据...";
+                var typeIds = ExcelHelper.ReadSecondColumnValues(OrdinaryOrePath);
+
+                // 使用并行处理
+                var tasks = typeIds.Select(async typeId =>
+                {
+                    try
+                    {
+                        return (typeId, await MarketApi.GetMarketData(_httpClient, typeId));
+                    }
+                    catch (Exception ex)
+                    {
+                        return (typeId, (SellMin: $"错误", BuyMax: ex.Message));
+                    }
+                });
+
+                // 批量等待所有请求
+                var results = await Task.WhenAll(tasks);
+
+                // 构建最终结果
+                var sb = new StringBuilder();
+                foreach (var result in results)
+                {
+                    sb.AppendLine($"{"最低售价",-10}{result.Item2.SellMin,-12} | {"最高收购",-10}{result.Item2.BuyMax,-12}");
+                    //sb.AppendLine($"{result.typeId}: 最低售价 {result.Item2.SellMin} | 最高收购 {result.Item2.BuyMax}");
+                }
+
+                UpdateLabelSafe(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                UpdateLabelSafe($"加载失败: {ex.Message}");
+            }
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -60,7 +118,8 @@ namespace EVE_For_Me
                     try
                     {
                         var (sellMin, buyMax) = await MarketApi.GetMarketData(_httpClient, typeId);
-                        results.AppendLine($"{typeId}: 最低售价 {sellMin} | 最高收购 {buyMax}");
+                        //results.AppendLine($"{typeId}: 最低售价 {sellMin} | 最高收购 {buyMax}");
+                        results.AppendLine($"最低售价 {sellMin} | 最高收购 {buyMax}");
                     }
                     catch (Exception ex)
                     {
@@ -80,20 +139,6 @@ namespace EVE_For_Me
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var results = new StringBuilder();
-            var oreNames = label2.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var name in oreNames)
-            {
-                int typeId = ExcelHelper.FindTypeIdByName(EvEDataPath, name.Trim());
-                results.AppendLine(typeId > 0 ? $"{typeId}" : $"{name}：未找到");
-            }
-
-            label4.Text = results.ToString();
-        }
-
         private void UpdateLabelSafe(string text)
         {
             if (label5.InvokeRequired)
@@ -104,6 +149,11 @@ namespace EVE_For_Me
             {
                 label5.Text = text;
             }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
@@ -185,19 +235,24 @@ namespace EVE_For_Me
     // 市场API接口类
     public static class MarketApi
     {
-        public static async Task<(string sellMin, string buyMax)> GetMarketData(HttpClient client, int typeId)
+        public static async Task<(string SellMin, string BuyMax)> GetMarketData(HttpClient client, int typeId)
         {
-            string apiUrl = $"https://www.ceve-market.org/api/market/region/10000002/type/{typeId}.json";
-            var response = await client.GetAsync(apiUrl);
-            response.EnsureSuccessStatusCode();
+            // 添加超时控制
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
+            var response = await client.GetAsync(
+                $"https://www.ceve-market.org/api/market/region/10000002/type/{typeId}.json",
+                cts.Token);
+
+            response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             dynamic data = JsonConvert.DeserializeObject(json);
 
             return (
-                sellMin: data.sell.min.ToString() ?? "N/A",
-                buyMax: data.buy.max.ToString() ?? "N/A"
+                SellMin: data.sell.min.ToString() ?? "N/A",
+                BuyMax: data.buy.max.ToString() ?? "N/A"
             );
         }
     }
+
 }

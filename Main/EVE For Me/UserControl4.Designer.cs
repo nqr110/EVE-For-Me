@@ -35,8 +35,6 @@
             tabPage2 = new System.Windows.Forms.TabPage();
             button2 = new System.Windows.Forms.Button();
             label5 = new System.Windows.Forms.Label();
-            button1 = new System.Windows.Forms.Button();
-            label4 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             tabPage3 = new System.Windows.Forms.TabPage();
             tabPage4 = new System.Windows.Forms.TabPage();
@@ -100,8 +98,6 @@
             // 
             tabPage2.Controls.Add(button2);
             tabPage2.Controls.Add(label5);
-            tabPage2.Controls.Add(button1);
-            tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(label2);
             tabPage2.Font = new System.Drawing.Font("楷体", 26.25F);
             tabPage2.Location = new System.Drawing.Point(4, 29);
@@ -114,11 +110,11 @@
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(506, 82);
+            button2.Location = new System.Drawing.Point(804, 6);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(147, 45);
+            button2.Size = new System.Drawing.Size(182, 45);
             button2.TabIndex = 4;
-            button2.Text = "开始";
+            button2.Text = "再次刷新";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
@@ -126,32 +122,12 @@
             // 
             label5.AutoSize = true;
             label5.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            label5.Location = new System.Drawing.Point(308, 13);
+            label5.Location = new System.Drawing.Point(172, 13);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(58, 24);
             label5.TabIndex = 3;
             label5.Text = "价格";
-            // 
-            // button1
-            // 
-            button1.Location = new System.Drawing.Point(506, 13);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(147, 45);
-            button1.TabIndex = 2;
-            button1.Text = "开始";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            label4.Location = new System.Drawing.Point(163, 13);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(82, 24);
-            label4.TabIndex = 1;
-            label4.Text = "TypeID";
-            label4.Click += label4_Click;
+            label5.Click += label5_Click;
             // 
             // label2
             // 
@@ -209,9 +185,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
     }
 }
