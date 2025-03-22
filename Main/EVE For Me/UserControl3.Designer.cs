@@ -38,7 +38,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new System.Drawing.Point(38, 48);
+            textBox1.Location = new System.Drawing.Point(20, 67);
             textBox1.Margin = new System.Windows.Forms.Padding(4);
             textBox1.Name = "textBox1";
             textBox1.Size = new System.Drawing.Size(116, 23);
@@ -47,7 +47,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(349, 112);
+            label3.Location = new System.Drawing.Point(341, 152);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(43, 17);
             label3.TabIndex = 11;
@@ -55,7 +55,7 @@
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(38, 104);
+            button1.Location = new System.Drawing.Point(20, 144);
             button1.Margin = new System.Windows.Forms.Padding(4);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(88, 33);
@@ -66,9 +66,9 @@
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(189, 104);
+            button2.Location = new System.Drawing.Point(187, 144);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(96, 36);
+            button2.Size = new System.Drawing.Size(88, 33);
             button2.TabIndex = 9;
             button2.Text = "网络API查询";
             button2.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(349, 54);
+            label2.Location = new System.Drawing.Point(341, 73);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(43, 17);
             label2.TabIndex = 10;
@@ -86,7 +86,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(189, 54);
+            label1.Location = new System.Drawing.Point(187, 73);
             label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(23, 17);

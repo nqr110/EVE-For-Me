@@ -126,7 +126,7 @@ namespace EVE_For_Me
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            LoadUserControl<UserControl4>();
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)

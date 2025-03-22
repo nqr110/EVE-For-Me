@@ -40,7 +40,6 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="Image\" />
   </ItemGroup>
   <ItemGroup>
