@@ -15,8 +15,19 @@ using System.Windows.Forms;
 
 namespace EVE_For_Me
 {
+    /// <summary>
+    /// EVE Online矿产市场数据查看控件
+    /// 功能：
+    /// 1. 支持多分类矿产数据展示（普通矿、冰矿、卫星矿）
+    /// 2. 从Excel文件加载矿产配置数据
+    /// 3. 实时获取CEVE市场API数据
+    /// 4. 支持按需刷新和首次加载优化
+    /// 5. 多线程安全UI更新
+    /// </summary>
     public partial class UserControl4 : UserControl
     {
+        // 初始化部分
+        // ---------------------------------------------------------------------------------
         private readonly HttpClient _httpClient = new HttpClient();
         private const string EvEDataPath = @"..\..\..\..\EVE For Me\Database\evedata.xlsx";
         // 普通矿石路径
@@ -26,27 +37,180 @@ namespace EVE_For_Me
         // 卫星矿路径
         private const string SatelliteOrePath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_satellite ore.xlsx";
         private bool _isFirstLoad = true;  // 添加首次加载标记
+        private Dictionary<TabPage, TabPageConfig> _tabConfigs;
+        // ---------------------------------------------------------------------------------
+
+        // 配置类：封装单个Tab页的数据和控件配置
+        private class TabPageConfig
+        {
+            public string DataPath { get; set; }      // Excel数据文件路径
+            public Label NameLabel { get; set; }      // 显示矿产名称的标签
+            public Label DataLabel { get; set; }      // 显示市场数据的标签
+            public Label TimeLabel { get; set; }      // 显示更新时间的标签
+            public Button RefreshButton { get; set; } // 刷新按钮
+            public bool IsFirstLoad { get; set; } = true; // 首次加载标记
+        }
 
         public UserControl4()
         {
             InitializeComponent();
+            InitializeTabConfigs();
+            SetupInitialLabels();
+            WireUpEvents();
+        }
+        private void InitializeTabConfigs()
+        {
+            _tabConfigs = new Dictionary<TabPage, TabPageConfig>
+            {
+                {
+                    tabPage2, new TabPageConfig
+                    {
+                        DataPath = OrdinaryOrePath,
+                        NameLabel = label2,
+                        DataLabel = label5,
+                        TimeLabel = label4,
+                        RefreshButton = button2
+                    }
+                },
+                {
+                    tabPage3, new TabPageConfig
+                    {
+                        DataPath = GlacialRockPath,
+                        NameLabel = label6,
+                        DataLabel = label7,
+                        TimeLabel = label8,
+                        RefreshButton = button3
+                    }
+                },
+                {
+                    tabPage4, new TabPageConfig
+                    {
+                        DataPath = SatelliteOrePath,
+                        NameLabel = label9,
+                        DataLabel = label10,
+                        TimeLabel = label11,
+                        RefreshButton = button1
+                    }
+                }
+            };
+        }
 
-            // 读取第一列名称
-            var oreNames = ExcelHelper.ReadFirstColumnNames(OrdinaryOrePath);
-            label2.Text = string.Join(Environment.NewLine, oreNames);
-            // 订阅TabControl切换事件
-            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+        private void SetupInitialLabels()
+        {
+            foreach (var config in _tabConfigs.Values)
+            {
+                var names = ExcelHelper.ReadFirstColumnNames(config.DataPath);
+                config.NameLabel.Text = string.Join(Environment.NewLine, names);
+            }
+        }
+
+        private void WireUpEvents()
+        {
+            tabControl1.SelectedIndexChanged += TabControl_SelectedIndexChanged;
+            button2.Click += RefreshButton_Click;
+            button3.Click += RefreshButton_Click;
+            button1.Click += RefreshButton_Click;
+        }
+
+        private async void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_tabConfigs.TryGetValue(tabControl1.SelectedTab, out var config))
+            {
+                await ExecuteWebDataLoading(config, forceReload: false);
+            }
+        }
+
+        private async void RefreshButton_Click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var config = _tabConfigs.Values.FirstOrDefault(c => c.RefreshButton == button);
+            if (config != null)
+            {
+                button.Enabled = false;
+                try
+                {
+                    await ExecuteWebDataLoading(config, forceReload: true);
+                }
+                finally
+                {
+                    button.Enabled = true;
+                }
+            }
+        }
+
+        private async Task ExecuteWebDataLoading(TabPageConfig config, bool forceReload)
+        {
+            try
+            {
+                if (!forceReload && !config.IsFirstLoad) return;
+                config.IsFirstLoad = false;
+
+                UpdateLabelSafe(config.DataLabel, "正在加载市场数据...");
+
+                var typeIds = ExcelHelper.ReadSecondColumnValues(config.DataPath);
+
+                var tasks = typeIds.Select(async typeId =>
+                {
+                    try
+                    {
+                        return (typeId, await MarketApi.GetMarketData(_httpClient, typeId));
+                    }
+                    catch
+                    {
+                        return (typeId, (SellMin: "错误", BuyMax: "错误"));
+                    }
+                });
+
+                var results = await Task.WhenAll(tasks);
+
+                var sb = new StringBuilder();
+                foreach (var result in results)
+                {
+                    sb.AppendLine($"{"最低售价",-6}{result.Item2.SellMin,-8} | {"最高收购",-6}{result.Item2.BuyMax,-8}");
+                }
+
+                UpdateLabelSafe(config.DataLabel, sb.ToString());
+                UpdateTimeLabel(config.TimeLabel, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            catch (Exception ex)
+            {
+                UpdateLabelSafe(config.DataLabel, $"操作失败: {ex.Message}");
+            }
+        }
+
+        private void UpdateTimeLabel(Label label, string time)
+        {
+            if (label.InvokeRequired)
+            {
+                label.BeginInvoke(new Action(() => label.Text = time));
+            }
+            else
+            {
+                label.Text = time;
+            }
+        }
+
+        private void UpdateLabelSafe(Label label, string text)
+        {
+            if (label.InvokeRequired)
+            {
+                label.Invoke(new Action(() => label.Text = text));
+            }
+            else
+            {
+                label.Text = text;
+            }
         }
 
 
         // Tab页切换事件处理
-        private async void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedTab == tabPage2)
-            {
-                await ExecuteWebDataLoading(false); // 正常预加载
-            }
-        }
+        //private async void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (tabControl1.SelectedTab == tabPage2)
+        //    {
+        //        await ExecuteWebDataLoading(false); // 正常预加载
+        //    }
+        //}
 
         private void tabPage1_Click(object sender, EventArgs e)
         {
@@ -88,7 +252,7 @@ namespace EVE_For_Me
 
         }
 
-        // 加载功能
+        //加载功能
         private async Task ExecuteWebDataLoading(bool forceReload)
         {
             try
@@ -138,7 +302,8 @@ namespace EVE_For_Me
         }
 
 
-        // 新增时间更新方法
+        //新增时间更新方法
+
         private void UpdateTimeLabel(string time)
         {
             if (label4.InvokeRequired)
@@ -164,6 +329,11 @@ namespace EVE_For_Me
             {
                 label5.Text = text;
             }
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

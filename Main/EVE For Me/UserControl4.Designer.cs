@@ -271,6 +271,7 @@
             label9.Size = new System.Drawing.Size(58, 24);
             label9.TabIndex = 0;
             label9.Text = "Name";
+            label9.Click += label9_Click;
             // 
             // UserControl4
             // 
