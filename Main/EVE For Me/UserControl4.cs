@@ -43,12 +43,12 @@ namespace EVE_For_Me
         // 配置类：封装单个Tab页的数据和控件配置
         private class TabPageConfig
         {
-            public string DataPath { get; set; }      // Excel数据文件路径
-            public Label NameLabel { get; set; }      // 显示矿产名称的标签
-            public Label DataLabel { get; set; }      // 显示市场数据的标签
-            public Label TimeLabel { get; set; }      // 显示更新时间的标签
-            public Button RefreshButton { get; set; } // 刷新按钮
-            public bool IsFirstLoad { get; set; } = true; // 首次加载标记
+            public string DataPath { get; set; }            // Excel数据文件路径
+            public Label NameLabel { get; set; }            // 显示矿产名称的标签
+            public Label DataLabel { get; set; }            // 显示市场数据的标签
+            public Label TimeLabel { get; set; }            // 显示更新时间的标签
+            public Button RefreshButton { get; set; }       // 刷新按钮
+            public bool IsFirstLoad { get; set; } = true;   // 首次加载标记
         }
 
         public UserControl4()
@@ -57,44 +57,54 @@ namespace EVE_For_Me
             InitializeTabConfigs();
             SetupInitialLabels();
             WireUpEvents();
+            InitializeComboBox();
         }
+        private void InitializeComboBox()
+        {
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
+        }
+        // 初始化配置时关联ComboBox
         private void InitializeTabConfigs()
         {
             _tabConfigs = new Dictionary<TabPage, TabPageConfig>
+        {
             {
+                tabPage2, new TabPageConfig
                 {
-                    tabPage2, new TabPageConfig
-                    {
-                        DataPath = OrdinaryOrePath,
-                        NameLabel = label2,
-                        DataLabel = label5,
-                        TimeLabel = label4,
-                        RefreshButton = button2
-                    }
-                },
-                {
-                    tabPage3, new TabPageConfig
-                    {
-                        DataPath = GlacialRockPath,
-                        NameLabel = label6,
-                        DataLabel = label7,
-                        TimeLabel = label8,
-                        RefreshButton = button3
-                    }
-                },
-                {
-                    tabPage4, new TabPageConfig
-                    {
-                        DataPath = SatelliteOrePath,
-                        NameLabel = label9,
-                        DataLabel = label10,
-                        TimeLabel = label11,
-                        RefreshButton = button1
-                    }
+                    DataPath = OrdinaryOrePath,
+                    SheetSelector = comboBox1,  // 关联控件
+                    NameLabel = label2,
+                    DataLabel = label5,
+                    TimeLabel = label4,
+                    RefreshButton = button2
                 }
-            };
+            },
+            {
+                tabPage3, new TabPageConfig
+                {
+                    DataPath = GlacialRockPath,
+                    SheetSelector = comboBox2,
+                    NameLabel = label6,
+                    DataLabel = label7,
+                    TimeLabel = label8,
+                    RefreshButton = button3
+                }
+            },
+            {
+                tabPage4, new TabPageConfig
+                {
+                    DataPath = SatelliteOrePath,
+                    SheetSelector = comboBox3,
+                    NameLabel = label9,
+                    DataLabel = label10,
+                    TimeLabel = label11,
+                    RefreshButton = button1
+                }
+            }
+        };
         }
-
         private void SetupInitialLabels()
         {
             foreach (var config in _tabConfigs.Values)
@@ -103,7 +113,6 @@ namespace EVE_For_Me
                 config.NameLabel.Text = string.Join(Environment.NewLine, names);
             }
         }
-
         private void WireUpEvents()
         {
             tabControl1.SelectedIndexChanged += TabControl_SelectedIndexChanged;
@@ -111,7 +120,6 @@ namespace EVE_For_Me
             button3.Click += RefreshButton_Click;
             button1.Click += RefreshButton_Click;
         }
-
         private async void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_tabConfigs.TryGetValue(tabControl1.SelectedTab, out var config))
@@ -119,7 +127,6 @@ namespace EVE_For_Me
                 await ExecuteWebDataLoading(config, forceReload: false);
             }
         }
-
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -137,7 +144,6 @@ namespace EVE_For_Me
                 }
             }
         }
-
         private async Task ExecuteWebDataLoading(TabPageConfig config, bool forceReload)
         {
             try
@@ -177,7 +183,6 @@ namespace EVE_For_Me
                 UpdateLabelSafe(config.DataLabel, $"操作失败: {ex.Message}");
             }
         }
-
         private void UpdateTimeLabel(Label label, string time)
         {
             if (label.InvokeRequired)
@@ -189,7 +194,6 @@ namespace EVE_For_Me
                 label.Text = time;
             }
         }
-
         private void UpdateLabelSafe(Label label, string text)
         {
             if (label.InvokeRequired)
@@ -201,22 +205,10 @@ namespace EVE_For_Me
                 label.Text = text;
             }
         }
-
-
-        // Tab页切换事件处理
-        //private async void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (tabControl1.SelectedTab == tabPage2)
-        //    {
-        //        await ExecuteWebDataLoading(false); // 正常预加载
-        //    }
-        //}
-
         private void tabPage1_Click(object sender, EventArgs e)
         {
 
         }
-
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -301,9 +293,7 @@ namespace EVE_For_Me
             }
         }
 
-
         //新增时间更新方法
-
         private void UpdateTimeLabel(string time)
         {
             if (label4.InvokeRequired)
@@ -318,7 +308,6 @@ namespace EVE_For_Me
                 label4.Text = $"{time}";
             }
         }
-
         private void UpdateLabelSafe(string text)
         {
             if (label5.InvokeRequired)
@@ -330,8 +319,11 @@ namespace EVE_For_Me
                 label5.Text = text;
             }
         }
-
         private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
@@ -435,36 +427,6 @@ namespace EVE_For_Me
                 return -1;
             }
         }
-
-        //public static List<int> ReadSecondColumnValues(string filePath)
-        //{
-        //    var values = new List<int>();
-        //    try
-        //    {
-        //        using var doc = SpreadsheetDocument.Open(filePath, false);
-        //        var workbookPart = doc.WorkbookPart;
-        //        var worksheetPart = workbookPart.WorksheetParts.First();
-        //        var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
-
-        //        foreach (var row in rows)
-        //        {
-        //            var cells = row.Elements<Cell>().ToList();
-        //            if (cells.Count >= 2)
-        //            {
-        //                var value = GetCellValue(workbookPart, cells[1]);
-        //                if (int.TryParse(value, out int result))
-        //                {
-        //                    values.Add(result);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception($"读取Excel失败: {ex.Message}");
-        //    }
-        //    return values;
-        //}
 
         private static string GetCellValue(WorkbookPart workbookPart, Cell cell)
         {
