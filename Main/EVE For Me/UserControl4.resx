@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label2.Text" xml:space="preserve">
+    <value>灼烧岩    ：
+干焦岩    ：
+凡晶石    ：
+双多特石  ：
+斜长岩    ：
+杰斯贝矿  ：
+同位原矿  ：
+水硼砂    ：
+克洛基石  ：
+奥贝尔石  ：
+希莫非特  ：
+艾克诺岩  ：
+灰岩      ：
+塔拉岩    ：
+亮灰岩    ：
+片麻岩    ：
+拉克岩    ：
+黑赭石    ：
+条纹赭    ：
+基腹断岩  ：
+贝兹岩    ：
+</value>
+  </data>
 </root>

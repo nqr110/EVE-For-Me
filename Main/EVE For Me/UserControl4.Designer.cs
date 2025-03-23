@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl4));
             label1 = new System.Windows.Forms.Label();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
             label3 = new System.Windows.Forms.Label();
             tabPage2 = new System.Windows.Forms.TabPage();
+            label4 = new System.Windows.Forms.Label();
             button2 = new System.Windows.Forms.Button();
             label5 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -96,6 +98,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(button2);
             tabPage2.Controls.Add(label5);
             tabPage2.Controls.Add(label2);
@@ -108,11 +111,22 @@
             tabPage2.Text = "普矿";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
+            label4.Location = new System.Drawing.Point(659, 84);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(69, 20);
+            label4.TabIndex = 5;
+            label4.Text = "label4";
+            // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(804, 6);
+            button2.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
+            button2.Location = new System.Drawing.Point(659, 42);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(182, 45);
+            button2.Size = new System.Drawing.Size(111, 30);
             button2.TabIndex = 4;
             button2.Text = "再次刷新";
             button2.UseVisualStyleBackColor = true;
@@ -122,7 +136,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            label5.Location = new System.Drawing.Point(172, 13);
+            label5.Location = new System.Drawing.Point(187, 13);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(58, 24);
             label5.TabIndex = 3;
@@ -135,9 +149,9 @@
             label2.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
             label2.Location = new System.Drawing.Point(16, 13);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(106, 504);
+            label2.Size = new System.Drawing.Size(154, 504);
             label2.TabIndex = 0;
-            label2.Text = "灼烧岩\r\n干焦岩\r\n凡晶石\r\n双多特石\r\n斜长岩\r\n杰斯贝矿\r\n同位原矿\r\n水硼砂\r\n克洛基石\r\n奥贝尔石\r\n希莫非特\r\n艾克诺岩\r\n灰岩\r\n塔拉岩\r\n亮灰岩\r\n片麻岩\r\n拉克岩\r\n黑赭石\r\n条纹赭\r\n基腹断岩\r\n贝兹岩\r\n";
+            label2.Text = resources.GetString("label2.Text");
             label2.Click += label2_Click;
             // 
             // tabPage3
@@ -187,5 +201,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -36,50 +36,7 @@ namespace EVE_For_Me
         {
             if (tabControl1.SelectedTab == tabPage2)
             {
-                await ExecuteWebDataLoading();
-            }
-        }
-
-        // 统一的网络数据加载方法
-        private async Task ExecuteWebDataLoading()
-        {
-            try
-            {
-                if (!_isFirstLoad) return;
-                _isFirstLoad = false;
-
-                label5.Text = "正在加载市场数据...";
-                var typeIds = ExcelHelper.ReadSecondColumnValues(OrdinaryOrePath);
-
-                // 使用并行处理
-                var tasks = typeIds.Select(async typeId =>
-                {
-                    try
-                    {
-                        return (typeId, await MarketApi.GetMarketData(_httpClient, typeId));
-                    }
-                    catch (Exception ex)
-                    {
-                        return (typeId, (SellMin: $"错误", BuyMax: ex.Message));
-                    }
-                });
-
-                // 批量等待所有请求
-                var results = await Task.WhenAll(tasks);
-
-                // 构建最终结果
-                var sb = new StringBuilder();
-                foreach (var result in results)
-                {
-                    sb.AppendLine($"{"最低售价",-10}{result.Item2.SellMin,-12} | {"最高收购",-10}{result.Item2.BuyMax,-12}");
-                    //sb.AppendLine($"{result.typeId}: 最低售价 {result.Item2.SellMin} | 最高收购 {result.Item2.BuyMax}");
-                }
-
-                UpdateLabelSafe(sb.ToString());
-            }
-            catch (Exception ex)
-            {
-                UpdateLabelSafe($"加载失败: {ex.Message}");
+                await ExecuteWebDataLoading(false); // 正常预加载
             }
         }
 
@@ -106,36 +63,80 @@ namespace EVE_For_Me
         private async void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
-            label5.Text = "数据加载中...";
-
             try
             {
-                var typeIds = ExcelHelper.ReadSecondColumnValues(OrdinaryOrePath);
-                var results = new StringBuilder();
-
-                foreach (int typeId in typeIds)
-                {
-                    try
-                    {
-                        var (sellMin, buyMax) = await MarketApi.GetMarketData(_httpClient, typeId);
-                        //results.AppendLine($"{typeId}: 最低售价 {sellMin} | 最高收购 {buyMax}");
-                        results.AppendLine($"最低售价 {sellMin} | 最高收购 {buyMax}");
-                    }
-                    catch (Exception ex)
-                    {
-                        results.AppendLine($"{typeId}: 错误 - {ex.Message}");
-                    }
-
-                    UpdateLabelSafe(results.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                UpdateLabelSafe($"初始化失败: {ex.Message}");
+                await ExecuteWebDataLoading(true); // 强制刷新
             }
             finally
             {
                 button2.Enabled = true;
+            }
+        }
+
+
+        // 加载功能
+        private async Task ExecuteWebDataLoading(bool forceReload)
+        {
+            try
+            {
+                // 检查是否需要执行加载
+                if (!forceReload && !_isFirstLoad)
+                    return;
+
+                // 更新首次加载标记（仅当非强制刷新时）
+                if (!forceReload)
+                    _isFirstLoad = false;
+
+                UpdateLabelSafe(forceReload ? "正在刷新市场数据..." : "正在加载市场数据...");
+
+                var typeIds = ExcelHelper.ReadSecondColumnValues(OrdinaryOrePath);
+
+                // 使用并行处理
+                var tasks = typeIds.Select(async typeId =>
+                {
+                    try
+                    {
+                        return (typeId, await MarketApi.GetMarketData(_httpClient, typeId));
+                    }
+                    catch (Exception ex)
+                    {
+                        return (typeId, (SellMin: $"错误", BuyMax: ex.Message));
+                    }
+                });
+
+                var results = await Task.WhenAll(tasks);
+
+                var sb = new StringBuilder();
+                foreach (var result in results)
+                {
+                    sb.AppendLine($"{"最低售价",-6}{result.Item2.SellMin,-8} | {"最高收购",-6}{result.Item2.BuyMax,-8}");
+                }
+
+                UpdateLabelSafe(sb.ToString());
+
+                // 可选：加载完成后更新时间
+                UpdateTimeLabel(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            catch (Exception ex)
+            {
+                UpdateLabelSafe($"操作失败: {ex.Message}");
+            }
+        }
+
+
+        // 新增时间更新方法
+        private void UpdateTimeLabel(string time)
+        {
+            if (label4.InvokeRequired)
+            {
+                label4.BeginInvoke(new Action(() =>
+                {
+                    label4.Text = $"{time}";
+                }));
+            }
+            else
+            {
+                label4.Text = $"{time}";
             }
         }
 
