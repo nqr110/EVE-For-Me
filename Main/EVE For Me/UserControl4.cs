@@ -43,12 +43,13 @@ namespace EVE_For_Me
         // 配置类：封装单个Tab页的数据和控件配置
         private class TabPageConfig
         {
-            public string DataPath { get; set; }      // Excel数据文件路径
-            public Label NameLabel { get; set; }      // 显示矿产名称的标签
-            public Label DataLabel { get; set; }      // 显示市场数据的标签
-            public Label TimeLabel { get; set; }      // 显示更新时间的标签
-            public Button RefreshButton { get; set; } // 刷新按钮
-            public bool IsFirstLoad { get; set; } = true; // 首次加载标记
+            public string DataPath { get; set; }            // Excel数据文件路径
+            public Label NameLabel { get; set; }            // 显示矿产名称的标签
+            public Label DataLabel { get; set; }            // 显示市场数据的标签
+            public Label TimeLabel { get; set; }            // 显示更新时间的标签
+            public Button RefreshButton { get; set; }       // 刷新按钮
+            public bool IsFirstLoad { get; set; } = true;   // 首次加载标记
+            public ComboBox SheetSelector { get; set; }     // 新增ComboBox关联
         }
 
         public UserControl4()
@@ -65,7 +66,6 @@ namespace EVE_For_Me
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
         }
-        // 初始化配置时关联ComboBox
         private void InitializeTabConfigs()
         {
             _tabConfigs = new Dictionary<TabPage, TabPageConfig>
@@ -324,6 +324,11 @@ namespace EVE_For_Me
 
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

@@ -39,7 +39,6 @@
             label5 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             tabPage3 = new System.Windows.Forms.TabPage();
-            checkBox2 = new System.Windows.Forms.CheckBox();
             button3 = new System.Windows.Forms.Button();
             label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
@@ -49,6 +48,8 @@
             label11 = new System.Windows.Forms.Label();
             label10 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
+            comboBox2 = new System.Windows.Forms.ComboBox();
+            comboBox3 = new System.Windows.Forms.ComboBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -132,7 +133,6 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(121, 28);
             comboBox1.TabIndex = 6;
-            comboBox1.Text = "Common";
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // label4
@@ -181,7 +181,7 @@
             // 
             // tabPage3
             // 
-            tabPage3.Controls.Add(checkBox2);
+            tabPage3.Controls.Add(comboBox2);
             tabPage3.Controls.Add(button3);
             tabPage3.Controls.Add(label8);
             tabPage3.Controls.Add(label7);
@@ -193,16 +193,6 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "冰矿";
             tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new System.Drawing.Point(659, 129);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new System.Drawing.Size(196, 39);
-            checkBox2.TabIndex = 4;
-            checkBox2.Text = "checkBox2";
-            checkBox2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -246,6 +236,7 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(comboBox3);
             tabPage4.Controls.Add(button1);
             tabPage4.Controls.Add(label11);
             tabPage4.Controls.Add(label10);
@@ -299,6 +290,27 @@
             label9.Text = "Name";
             label9.Click += label9_Click;
             // 
+            // comboBox2
+            // 
+            comboBox2.Font = new System.Drawing.Font("楷体", 15F);
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "Common", "Compression" });
+            comboBox2.Location = new System.Drawing.Point(659, 124);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new System.Drawing.Size(121, 28);
+            comboBox2.TabIndex = 4;
+            comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
+            // 
+            // comboBox3
+            // 
+            comboBox3.Font = new System.Drawing.Font("楷体", 15F);
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Items.AddRange(new object[] { "Common", "Compression" });
+            comboBox3.Location = new System.Drawing.Point(659, 124);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new System.Drawing.Size(121, 28);
+            comboBox3.TabIndex = 4;
+            // 
             // UserControl4
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -340,6 +352,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox3;
     }
 }
