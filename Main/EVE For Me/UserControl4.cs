@@ -36,7 +36,6 @@ namespace EVE_For_Me
         private const string GlacialRockPath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_glacial rock.xlsx";
         // 卫星矿路径
         private const string SatelliteOrePath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_satellite ore.xlsx";
-        private bool _isFirstLoad = true;  // 添加首次加载标记
         private Dictionary<TabPage, TabPageConfig> _tabConfigs;
         // ---------------------------------------------------------------------------------
 
@@ -468,6 +467,7 @@ namespace EVE_For_Me
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Message}"); // 使用 ex
                 return (SellMin: "ERR", BuyMax: "ERR");
             }
         }
