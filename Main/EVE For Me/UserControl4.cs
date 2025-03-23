@@ -74,7 +74,7 @@ namespace EVE_For_Me
                 tabPage2, new TabPageConfig
                 {
                     DataPath = OrdinaryOrePath,
-                    SheetSelector = comboBox1,  // 关联控件
+                    SheetSelector = comboBox1,
                     NameLabel = label2,
                     DataLabel = label5,
                     TimeLabel = label4,
@@ -109,9 +109,14 @@ namespace EVE_For_Me
         {
             foreach (var config in _tabConfigs.Values)
             {
-                var names = ExcelHelper.ReadFirstColumnNames(config.DataPath);
+                var sheetName = GetCurrentSheetName(config.SheetSelector);
+                var names = ExcelHelper.ReadFirstColumnNames(config.DataPath, sheetName);
                 config.NameLabel.Text = string.Join(Environment.NewLine, names);
             }
+        }
+        private string GetCurrentSheetName(ComboBox comboBox)
+        {
+            return comboBox.SelectedIndex == 0 ? "Common" : "Compression";
         }
         private void WireUpEvents()
         {
@@ -119,10 +124,32 @@ namespace EVE_For_Me
             button2.Click += RefreshButton_Click;
             button3.Click += RefreshButton_Click;
             button1.Click += RefreshButton_Click;
+            // 添加ComboBox事件处理
+            comboBox1.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
+            comboBox2.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
+            comboBox3.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
+        }
+        private async void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            var config = _tabConfigs.Values.FirstOrDefault(c => c.SheetSelector == comboBox);
+            if (config != null)
+            {
+                // 更新名称标签
+                var sheetName = GetCurrentSheetName(comboBox);
+                var names = ExcelHelper.ReadFirstColumnNames(config.DataPath, sheetName);
+                UpdateLabelSafe(config.NameLabel, string.Join(Environment.NewLine, names));
+
+                // 自动刷新数据
+                await ExecuteWebDataLoading(config, forceReload: true);
+            }
         }
         private async void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_tabConfigs.TryGetValue(tabControl1.SelectedTab, out var config))
+            var selectedTab = tabControl1.SelectedTab;
+            Console.WriteLine($"切换到: {selectedTab?.Name}");
+
+            if (_tabConfigs.TryGetValue(selectedTab, out var config))
             {
                 await ExecuteWebDataLoading(config, forceReload: false);
             }
@@ -148,35 +175,44 @@ namespace EVE_For_Me
         {
             try
             {
-                if (!forceReload && !config.IsFirstLoad) return;
-                config.IsFirstLoad = false;
+                // 添加实际加载逻辑
+                var sheetName = GetCurrentSheetName(config.SheetSelector);
 
-                UpdateLabelSafe(config.DataLabel, "正在加载市场数据...");
+                // 1. 读取Excel数据
+                var typeIDs = ExcelHelper.ReadSecondColumnValues(config.DataPath, sheetName);
+                if (typeIDs.Count == 0)
+                {
+                    UpdateLabelSafe(config.DataLabel, "未找到有效矿石数据");
+                    return;
+                }
 
-                var typeIds = ExcelHelper.ReadSecondColumnValues(config.DataPath);
-
-                var tasks = typeIds.Select(async typeId =>
+                // 2. 并行获取市场数据
+                var marketDataTasks = typeIDs.Select(async typeID =>
                 {
                     try
                     {
-                        return (typeId, await MarketApi.GetMarketData(_httpClient, typeId));
+                        return await MarketApi.GetMarketData(_httpClient, typeID);
                     }
                     catch
                     {
-                        return (typeId, (SellMin: "错误", BuyMax: "错误"));
+                        return (SellMin: "N/A", BuyMax: "N/A");
                     }
                 });
 
-                var results = await Task.WhenAll(tasks);
+                var results = await Task.WhenAll(marketDataTasks);
 
+                // 3. 构建显示数据
                 var sb = new StringBuilder();
-                foreach (var result in results)
+                foreach (var data in results)
                 {
-                    sb.AppendLine($"{"最低售价",-6}{result.Item2.SellMin,-8} | {"最高收购",-6}{result.Item2.BuyMax,-8}");
+                    sb.AppendLine($"卖出: {data.SellMin} 买入: {data.BuyMax}");
                 }
 
+                // 4. 更新UI
                 UpdateLabelSafe(config.DataLabel, sb.ToString());
                 UpdateTimeLabel(config.TimeLabel, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                config.IsFirstLoad = false; // 正确重置首次加载标记
             }
             catch (Exception ex)
             {
@@ -224,15 +260,8 @@ namespace EVE_For_Me
         }
         private async void button2_Click(object sender, EventArgs e)
         {
-            button2.Enabled = false;
-            try
-            {
-                await ExecuteWebDataLoading(true); // 强制刷新
-            }
-            finally
-            {
-                button2.Enabled = true;
-            }
+            var config = _tabConfigs[tabPage2]; // 直接获取对应配置
+            await ExecuteWebDataLoading(config, forceReload: true);
         }
         private void label4_Click_1(object sender, EventArgs e)
         {
@@ -243,56 +272,6 @@ namespace EVE_For_Me
         {
 
         }
-
-        //加载功能
-        private async Task ExecuteWebDataLoading(bool forceReload)
-        {
-            try
-            {
-                // 检查是否需要执行加载
-                if (!forceReload && !_isFirstLoad)
-                    return;
-
-                // 更新首次加载标记（仅当非强制刷新时）
-                if (!forceReload)
-                    _isFirstLoad = false;
-
-                UpdateLabelSafe(forceReload ? "正在刷新市场数据..." : "正在加载市场数据...");
-
-                var typeIds = ExcelHelper.ReadSecondColumnValues(OrdinaryOrePath);
-
-                // 使用并行处理
-                var tasks = typeIds.Select(async typeId =>
-                {
-                    try
-                    {
-                        return (typeId, await MarketApi.GetMarketData(_httpClient, typeId));
-                    }
-                    catch (Exception ex)
-                    {
-                        return (typeId, (SellMin: $"错误", BuyMax: ex.Message));
-                    }
-                });
-
-                var results = await Task.WhenAll(tasks);
-
-                var sb = new StringBuilder();
-                foreach (var result in results)
-                {
-                    sb.AppendLine($"{"最低售价",-6}{result.Item2.SellMin,-8} | {"最高收购",-6}{result.Item2.BuyMax,-8}");
-                }
-
-                UpdateLabelSafe(sb.ToString());
-
-                // 可选：加载完成后更新时间
-                UpdateTimeLabel(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            }
-            catch (Exception ex)
-            {
-                UpdateLabelSafe($"操作失败: {ex.Message}");
-            }
-        }
-
         //新增时间更新方法
         private void UpdateTimeLabel(string time)
         {
@@ -337,59 +316,72 @@ namespace EVE_For_Me
     // 公共帮助类
     public static class ExcelHelper
     {
-        // 原始方法保持兼容
-        public static List<int> ReadSecondColumnValues(string filePath)
+        private static WorksheetPart GetWorksheetPart(WorkbookPart workbookPart, string sheetName)
         {
-            return ReadNumericColumn(filePath, 1);
+            var sheet = workbookPart.Workbook.Descendants<Sheet>()
+                .FirstOrDefault(s => s.Name.Value.Equals(sheetName, StringComparison.OrdinalIgnoreCase));
+
+            return sheet == null
+                ? null
+                : workbookPart.GetPartById(sheet.Id) as WorksheetPart;
+        }
+        // 原始方法保持兼容
+        public static List<int> ReadSecondColumnValues(string filePath, string sheetName)
+        {
+            return ReadNumericColumn(filePath, sheetName, 1);
         }
         // 新增第一列读取方法
-        public static List<string> ReadFirstColumnNames(string filePath)
+        public static List<string> ReadFirstColumnNames(string filePath, string sheetName)
         {
-            return ReadTextColumn(filePath, 0);
+            return ReadTextColumn(filePath, sheetName, 0);
         }
 
         // 专用数值列读取方法
-        private static List<int> ReadNumericColumn(string filePath, int columnIndex)
+        private static List<int> ReadNumericColumn(string filePath, string sheetName, int columnIndex)
         {
             var values = new List<int>();
             try
             {
                 using var doc = SpreadsheetDocument.Open(filePath, false);
                 var workbookPart = doc.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
+                var worksheetPart = GetWorksheetPart(workbookPart, sheetName);
 
+                if (worksheetPart == null) return values;
+
+                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
                 foreach (var row in rows)
                 {
                     var cells = row.Elements<Cell>().ToList();
                     if (cells.Count > columnIndex)
                     {
-                        var value = GetCellValue(workbookPart, cells[columnIndex]);
-                        if (int.TryParse(value, out var numericValue))
+                        var cellValue = GetCellValue(workbookPart, cells[columnIndex]);
+                        if (int.TryParse(cellValue, out int numericValue))
                         {
                             values.Add(numericValue);
                         }
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // 保持原始错误处理风格
+                Console.WriteLine($"Excel读取错误: {ex.Message}");
             }
             return values;
         }
 
         // 专用文本列读取方法
-        private static List<string> ReadTextColumn(string filePath, int columnIndex)
+        private static List<string> ReadTextColumn(string filePath, string sheetName, int columnIndex)
         {
             var values = new List<string>();
             try
             {
                 using var doc = SpreadsheetDocument.Open(filePath, false);
                 var workbookPart = doc.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
+                var worksheetPart = GetWorksheetPart(workbookPart, sheetName);
 
+                if (worksheetPart == null) return values;
+
+                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
                 foreach (var row in rows)
                 {
                     var cells = row.Elements<Cell>().ToList();
@@ -401,11 +393,15 @@ namespace EVE_For_Me
             }
             catch
             {
-                // 保持原始错误处理风格
+                // 保持错误处理
             }
             return values;
         }
-
+        // 添加兼容重载
+        public static List<string> ReadFirstColumnNames(string filePath)
+        {
+            return ReadTextColumn(filePath, "Common", 0);
+        }
 
         public static int FindTypeIdByName(string filePath, string itemName)
         {
@@ -454,22 +450,37 @@ namespace EVE_For_Me
     {
         public static async Task<(string SellMin, string BuyMax)> GetMarketData(HttpClient client, int typeId)
         {
-            // 添加超时控制
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            try
+            {
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+                var response = await client.GetAsync(
+                    $"https://www.ceve-market.org/api/market/region/10000002/type/{typeId}.json",
+                    cts.Token);
 
-            var response = await client.GetAsync(
-                $"https://www.ceve-market.org/api/market/region/10000002/type/{typeId}.json",
-                cts.Token);
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                dynamic data = JsonConvert.DeserializeObject(json);
 
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            dynamic data = JsonConvert.DeserializeObject(json);
-
-            return (
-                SellMin: data.sell.min.ToString() ?? "N/A",
-                BuyMax: data.buy.max.ToString() ?? "N/A"
-            );
+                return (
+                    SellMin: FormatPrice(data.sell.min),
+                    BuyMax: FormatPrice(data.buy.max)
+                );
+            }
+            catch (Exception ex)
+            {
+                return (SellMin: "ERR", BuyMax: "ERR");
+            }
+        }
+        private static string FormatPrice(dynamic value)
+        {
+            try
+            {
+                return string.Format("{0:N2}", (double)value);
+            }
+            catch
+            {
+                return "N/A";
+            }
         }
     }
-
 }
