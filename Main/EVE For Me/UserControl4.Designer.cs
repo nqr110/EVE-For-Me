@@ -38,10 +38,20 @@
             label5 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             tabPage3 = new System.Windows.Forms.TabPage();
+            button3 = new System.Windows.Forms.Button();
+            label8 = new System.Windows.Forms.Label();
+            label7 = new System.Windows.Forms.Label();
+            label6 = new System.Windows.Forms.Label();
             tabPage4 = new System.Windows.Forms.TabPage();
+            button1 = new System.Windows.Forms.Button();
+            label11 = new System.Windows.Forms.Label();
+            label10 = new System.Windows.Forms.Label();
+            label9 = new System.Windows.Forms.Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            tabPage3.SuspendLayout();
+            tabPage4.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -62,7 +72,7 @@
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabControl1.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 134);
+            tabControl1.Font = new System.Drawing.Font("楷体", 15F);
             tabControl1.ItemSize = new System.Drawing.Size(100, 25);
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Name = "tabControl1";
@@ -119,6 +129,7 @@
             label4.Size = new System.Drawing.Size(89, 20);
             label4.TabIndex = 5;
             label4.Text = "Datetime";
+            label4.Click += label4_Click_1;
             // 
             // button2
             // 
@@ -155,6 +166,10 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(button3);
+            tabPage3.Controls.Add(label8);
+            tabPage3.Controls.Add(label7);
+            tabPage3.Controls.Add(label6);
             tabPage3.Font = new System.Drawing.Font("楷体", 26.25F);
             tabPage3.Location = new System.Drawing.Point(4, 29);
             tabPage3.Name = "tabPage3";
@@ -163,8 +178,52 @@
             tabPage3.Text = "冰矿";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            button3.Font = new System.Drawing.Font("楷体", 15F);
+            button3.Location = new System.Drawing.Point(659, 42);
+            button3.Name = "button3";
+            button3.Size = new System.Drawing.Size(111, 30);
+            button3.TabIndex = 3;
+            button3.Text = "再次刷新";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new System.Drawing.Font("楷体", 15F);
+            label8.Location = new System.Drawing.Point(659, 84);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(89, 20);
+            label8.TabIndex = 2;
+            label8.Text = "Datetime";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new System.Drawing.Font("楷体", 18F);
+            label7.Location = new System.Drawing.Point(187, 13);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(58, 24);
+            label7.TabIndex = 1;
+            label7.Text = "价格";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new System.Drawing.Font("楷体", 18F);
+            label6.Location = new System.Drawing.Point(16, 13);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(58, 24);
+            label6.TabIndex = 0;
+            label6.Text = "Name";
+            // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(button1);
+            tabPage4.Controls.Add(label11);
+            tabPage4.Controls.Add(label10);
+            tabPage4.Controls.Add(label9);
             tabPage4.Font = new System.Drawing.Font("楷体", 26.25F);
             tabPage4.Location = new System.Drawing.Point(4, 29);
             tabPage4.Name = "tabPage4";
@@ -172,6 +231,46 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "卫星矿";
             tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Font = new System.Drawing.Font("楷体", 15F);
+            button1.Location = new System.Drawing.Point(659, 42);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(111, 30);
+            button1.TabIndex = 3;
+            button1.Text = "再次刷新";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new System.Drawing.Font("楷体", 15F);
+            label11.Location = new System.Drawing.Point(659, 84);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(89, 20);
+            label11.TabIndex = 2;
+            label11.Text = "Datetime";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new System.Drawing.Font("楷体", 18F);
+            label10.Location = new System.Drawing.Point(187, 13);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(58, 24);
+            label10.TabIndex = 1;
+            label10.Text = "价格";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new System.Drawing.Font("楷体", 18F);
+            label9.Location = new System.Drawing.Point(16, 13);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(58, 24);
+            label9.TabIndex = 0;
+            label9.Text = "Name";
             // 
             // UserControl4
             // 
@@ -185,6 +284,10 @@
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
+            tabPage4.ResumeLayout(false);
+            tabPage4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -201,5 +304,13 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
     }
 }

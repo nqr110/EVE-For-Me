@@ -57,17 +57,15 @@ namespace EVE_For_Me
         {
 
         }
-
+        // TabPage2 控件组 Start
         private void label2_Click(object sender, EventArgs e)
         {
 
         }
-
-        private void label4_Click(object sender, EventArgs e)
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }
-
         private async void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
@@ -80,7 +78,15 @@ namespace EVE_For_Me
                 button2.Enabled = true;
             }
         }
+        private void label4_Click_1(object sender, EventArgs e)
+        {
 
+        }
+        // TabPage2 控件组 End
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
 
         // 加载功能
         private async Task ExecuteWebDataLoading(bool forceReload)
@@ -158,11 +164,6 @@ namespace EVE_For_Me
             {
                 label5.Text = text;
             }
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
         }
     }
 
