@@ -19,13 +19,21 @@ namespace EVE_For_Me
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private const string EvEDataPath = @"..\..\..\..\EVE For Me\Database\evedata.xlsx";
+        // 普通矿石路径
         private const string OrdinaryOrePath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_ordinary ore.xlsx";
+        // 冰矿路径
+        private const string GlacialRockPath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_glacial rock.xlsx";
+        // 卫星矿路径
+        private const string SatelliteOrePath = @"E:\Visual Studio\EVE For Me\Main\EVE For Me\Database\EVE_TypeID_satellite ore.xlsx";
         private bool _isFirstLoad = true;  // 添加首次加载标记
 
         public UserControl4()
         {
             InitializeComponent();
 
+            // 读取第一列名称
+            var oreNames = ExcelHelper.ReadFirstColumnNames(OrdinaryOrePath);
+            label2.Text = string.Join(Environment.NewLine, oreNames);
             // 订阅TabControl切换事件
             tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
         }
@@ -161,6 +169,76 @@ namespace EVE_For_Me
     // 公共帮助类
     public static class ExcelHelper
     {
+        // 原始方法保持兼容
+        public static List<int> ReadSecondColumnValues(string filePath)
+        {
+            return ReadNumericColumn(filePath, 1);
+        }
+        // 新增第一列读取方法
+        public static List<string> ReadFirstColumnNames(string filePath)
+        {
+            return ReadTextColumn(filePath, 0);
+        }
+
+        // 专用数值列读取方法
+        private static List<int> ReadNumericColumn(string filePath, int columnIndex)
+        {
+            var values = new List<int>();
+            try
+            {
+                using var doc = SpreadsheetDocument.Open(filePath, false);
+                var workbookPart = doc.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
+
+                foreach (var row in rows)
+                {
+                    var cells = row.Elements<Cell>().ToList();
+                    if (cells.Count > columnIndex)
+                    {
+                        var value = GetCellValue(workbookPart, cells[columnIndex]);
+                        if (int.TryParse(value, out var numericValue))
+                        {
+                            values.Add(numericValue);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // 保持原始错误处理风格
+            }
+            return values;
+        }
+
+        // 专用文本列读取方法
+        private static List<string> ReadTextColumn(string filePath, int columnIndex)
+        {
+            var values = new List<string>();
+            try
+            {
+                using var doc = SpreadsheetDocument.Open(filePath, false);
+                var workbookPart = doc.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
+
+                foreach (var row in rows)
+                {
+                    var cells = row.Elements<Cell>().ToList();
+                    if (cells.Count > columnIndex)
+                    {
+                        values.Add(GetCellValue(workbookPart, cells[columnIndex]));
+                    }
+                }
+            }
+            catch
+            {
+                // 保持原始错误处理风格
+            }
+            return values;
+        }
+
+
         public static int FindTypeIdByName(string filePath, string itemName)
         {
             try
@@ -187,35 +265,35 @@ namespace EVE_For_Me
             }
         }
 
-        public static List<int> ReadSecondColumnValues(string filePath)
-        {
-            var values = new List<int>();
-            try
-            {
-                using var doc = SpreadsheetDocument.Open(filePath, false);
-                var workbookPart = doc.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
+        //public static List<int> ReadSecondColumnValues(string filePath)
+        //{
+        //    var values = new List<int>();
+        //    try
+        //    {
+        //        using var doc = SpreadsheetDocument.Open(filePath, false);
+        //        var workbookPart = doc.WorkbookPart;
+        //        var worksheetPart = workbookPart.WorksheetParts.First();
+        //        var rows = worksheetPart.Worksheet.Descendants<Row>().Skip(1);
 
-                foreach (var row in rows)
-                {
-                    var cells = row.Elements<Cell>().ToList();
-                    if (cells.Count >= 2)
-                    {
-                        var value = GetCellValue(workbookPart, cells[1]);
-                        if (int.TryParse(value, out int result))
-                        {
-                            values.Add(result);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"读取Excel失败: {ex.Message}");
-            }
-            return values;
-        }
+        //        foreach (var row in rows)
+        //        {
+        //            var cells = row.Elements<Cell>().ToList();
+        //            if (cells.Count >= 2)
+        //            {
+        //                var value = GetCellValue(workbookPart, cells[1]);
+        //                if (int.TryParse(value, out int result))
+        //                {
+        //                    values.Add(result);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception($"读取Excel失败: {ex.Message}");
+        //    }
+        //    return values;
+        //}
 
         private static string GetCellValue(WorkbookPart workbookPart, Cell cell)
         {

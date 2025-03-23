@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl4));
             label1 = new System.Windows.Forms.Label();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
@@ -117,9 +116,9 @@
             label4.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
             label4.Location = new System.Drawing.Point(659, 84);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(69, 20);
+            label4.Size = new System.Drawing.Size(89, 20);
             label4.TabIndex = 5;
-            label4.Text = "label4";
+            label4.Text = "Datetime";
             // 
             // button2
             // 
@@ -149,9 +148,9 @@
             label2.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
             label2.Location = new System.Drawing.Point(16, 13);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(154, 504);
+            label2.Size = new System.Drawing.Size(58, 24);
             label2.TabIndex = 0;
-            label2.Text = resources.GetString("label2.Text");
+            label2.Text = "Name";
             label2.Click += label2_Click;
             // 
             // tabPage3
