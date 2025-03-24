@@ -39,17 +39,17 @@
             label5 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             tabPage3 = new System.Windows.Forms.TabPage();
+            comboBox2 = new System.Windows.Forms.ComboBox();
             button3 = new System.Windows.Forms.Button();
             label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             tabPage4 = new System.Windows.Forms.TabPage();
+            comboBox3 = new System.Windows.Forms.ComboBox();
             button1 = new System.Windows.Forms.Button();
             label11 = new System.Windows.Forms.Label();
             label10 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
-            comboBox2 = new System.Windows.Forms.ComboBox();
-            comboBox3 = new System.Windows.Forms.ComboBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -129,9 +129,9 @@
             comboBox1.Font = new System.Drawing.Font("楷体", 15F);
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "Common", "Compression" });
-            comboBox1.Location = new System.Drawing.Point(659, 124);
+            comboBox1.Location = new System.Drawing.Point(830, 124);
             comboBox1.Name = "comboBox1";
-            comboBox1.Size = new System.Drawing.Size(121, 28);
+            comboBox1.Size = new System.Drawing.Size(140, 28);
             comboBox1.TabIndex = 6;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
@@ -139,7 +139,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            label4.Location = new System.Drawing.Point(659, 84);
+            label4.Location = new System.Drawing.Point(830, 84);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(89, 20);
             label4.TabIndex = 5;
@@ -149,7 +149,7 @@
             // button2
             // 
             button2.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            button2.Location = new System.Drawing.Point(659, 42);
+            button2.Location = new System.Drawing.Point(830, 42);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(111, 30);
             button2.TabIndex = 4;
@@ -160,8 +160,8 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            label5.Location = new System.Drawing.Point(187, 13);
+            label5.Font = new System.Drawing.Font("楷体", 18F);
+            label5.Location = new System.Drawing.Point(220, 13);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(58, 24);
             label5.TabIndex = 3;
@@ -171,7 +171,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("楷体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
+            label2.Font = new System.Drawing.Font("楷体", 18F);
             label2.Location = new System.Drawing.Point(16, 13);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(58, 24);
@@ -194,10 +194,21 @@
             tabPage3.Text = "冰矿";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // comboBox2
+            // 
+            comboBox2.Font = new System.Drawing.Font("楷体", 15F);
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "Common", "Compression" });
+            comboBox2.Location = new System.Drawing.Point(830, 124);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new System.Drawing.Size(140, 28);
+            comboBox2.TabIndex = 4;
+            comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
+            // 
             // button3
             // 
             button3.Font = new System.Drawing.Font("楷体", 15F);
-            button3.Location = new System.Drawing.Point(659, 42);
+            button3.Location = new System.Drawing.Point(830, 42);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(111, 30);
             button3.TabIndex = 3;
@@ -208,7 +219,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new System.Drawing.Font("楷体", 15F);
-            label8.Location = new System.Drawing.Point(659, 84);
+            label8.Location = new System.Drawing.Point(830, 84);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(89, 20);
             label8.TabIndex = 2;
@@ -218,7 +229,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new System.Drawing.Font("楷体", 18F);
-            label7.Location = new System.Drawing.Point(187, 13);
+            label7.Location = new System.Drawing.Point(220, 13);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(58, 24);
             label7.TabIndex = 1;
@@ -249,10 +260,20 @@
             tabPage4.Text = "卫星矿";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // comboBox3
+            // 
+            comboBox3.Font = new System.Drawing.Font("楷体", 15F);
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Items.AddRange(new object[] { "Common", "Compression" });
+            comboBox3.Location = new System.Drawing.Point(830, 124);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new System.Drawing.Size(140, 28);
+            comboBox3.TabIndex = 4;
+            // 
             // button1
             // 
             button1.Font = new System.Drawing.Font("楷体", 15F);
-            button1.Location = new System.Drawing.Point(659, 42);
+            button1.Location = new System.Drawing.Point(830, 42);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(111, 30);
             button1.TabIndex = 3;
@@ -263,7 +284,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new System.Drawing.Font("楷体", 15F);
-            label11.Location = new System.Drawing.Point(659, 84);
+            label11.Location = new System.Drawing.Point(830, 84);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(89, 20);
             label11.TabIndex = 2;
@@ -273,7 +294,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new System.Drawing.Font("楷体", 18F);
-            label10.Location = new System.Drawing.Point(187, 13);
+            label10.Location = new System.Drawing.Point(220, 13);
             label10.Name = "label10";
             label10.Size = new System.Drawing.Size(58, 24);
             label10.TabIndex = 1;
@@ -289,27 +310,6 @@
             label9.TabIndex = 0;
             label9.Text = "Name";
             label9.Click += label9_Click;
-            // 
-            // comboBox2
-            // 
-            comboBox2.Font = new System.Drawing.Font("楷体", 15F);
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Items.AddRange(new object[] { "Common", "Compression" });
-            comboBox2.Location = new System.Drawing.Point(659, 124);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new System.Drawing.Size(121, 28);
-            comboBox2.TabIndex = 4;
-            comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
-            // 
-            // comboBox3
-            // 
-            comboBox3.Font = new System.Drawing.Font("楷体", 15F);
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Items.AddRange(new object[] { "Common", "Compression" });
-            comboBox3.Location = new System.Drawing.Point(659, 124);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new System.Drawing.Size(121, 28);
-            comboBox3.TabIndex = 4;
             // 
             // UserControl4
             // 

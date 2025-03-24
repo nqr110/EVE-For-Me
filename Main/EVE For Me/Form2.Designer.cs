@@ -44,7 +44,7 @@
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(984, 561);
+            panel1.Size = new System.Drawing.Size(1184, 561);
             panel1.TabIndex = 6;
             panel1.Paint += panel1_Paint;
             // 
@@ -105,7 +105,7 @@
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
-            ClientSize = new System.Drawing.Size(984, 561);
+            ClientSize = new System.Drawing.Size(1184, 561);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");

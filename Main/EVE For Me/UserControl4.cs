@@ -174,10 +174,7 @@ namespace EVE_For_Me
         {
             try
             {
-                // 添加实际加载逻辑
                 var sheetName = GetCurrentSheetName(config.SheetSelector);
-
-                // 1. 读取Excel数据
                 var typeIDs = ExcelHelper.ReadSecondColumnValues(config.DataPath, sheetName);
                 if (typeIDs.Count == 0)
                 {
@@ -185,39 +182,41 @@ namespace EVE_For_Me
                     return;
                 }
 
-                // 2. 并行获取市场数据
                 var marketDataTasks = typeIDs.Select(async typeID =>
                 {
-                    try
-                    {
-                        return await MarketApi.GetMarketData(_httpClient, typeID);
-                    }
-                    catch
-                    {
-                        return (SellMin: "N/A", BuyMax: "N/A");
-                    }
+                    try { return await MarketApi.GetMarketData(_httpClient, typeID); }
+                    catch { return (SellMin: "N/A", BuyMax: "N/A"); }
                 });
 
                 var results = await Task.WhenAll(marketDataTasks);
 
-                // 3. 构建显示数据
+                // 修改后的格式化代码
                 var sb = new StringBuilder();
                 foreach (var data in results)
                 {
-                    sb.AppendLine($"卖出: {data.SellMin} 买入: {data.BuyMax}");
+                    // 使用更宽松的对齐方式
+                    sb.AppendLine($"卖出：{FormatForDisplay(data.SellMin),-18}买入：{FormatForDisplay(data.BuyMax),18}");
                 }
 
-                // 4. 更新UI
                 UpdateLabelSafe(config.DataLabel, sb.ToString());
                 UpdateTimeLabel(config.TimeLabel, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-
-                config.IsFirstLoad = false; // 正确重置首次加载标记
+                config.IsFirstLoad = false;
             }
             catch (Exception ex)
             {
                 UpdateLabelSafe(config.DataLabel, $"操作失败: {ex.Message}");
             }
         }
+        // 新增显示格式化方法
+        private static string FormatForDisplay(string price)
+        {
+            if (decimal.TryParse(price.Replace(",", ""), out decimal value))
+            {
+                return value.ToString("#,##0.00").PadLeft(15);
+            }
+            return price.PadLeft(15);
+        }
+
         private void UpdateTimeLabel(Label label, string time)
         {
             if (label.InvokeRequired)
@@ -475,11 +474,13 @@ namespace EVE_For_Me
         {
             try
             {
-                return string.Format("{0:N2}", (double)value);
+                // 强制转换为 decimal 类型进行格式化
+                decimal price = Convert.ToDecimal(value);
+                return price.ToString("N2").PadLeft(10); // 统一为 10 字符宽度
             }
             catch
             {
-                return "N/A";
+                return "N/A".PadLeft(10);
             }
         }
     }
