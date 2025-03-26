@@ -31,7 +31,6 @@
             label1 = new System.Windows.Forms.Label();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
-            label3 = new System.Windows.Forms.Label();
             tabPage2 = new System.Windows.Forms.TabPage();
             comboBox1 = new System.Windows.Forms.ComboBox();
             label4 = new System.Windows.Forms.Label();
@@ -86,7 +85,6 @@
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(label1);
             tabPage1.Font = new System.Drawing.Font("楷体", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 134);
             tabPage1.Location = new System.Drawing.Point(4, 29);
@@ -97,16 +95,6 @@
             tabPage1.Text = "帮助";
             tabPage1.UseVisualStyleBackColor = true;
             tabPage1.Click += tabPage1_Click;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 134);
-            label3.Location = new System.Drawing.Point(24, 64);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(187, 56);
-            label3.TabIndex = 3;
-            label3.Text = "自述文件：\r\n    1. 显示当天矿价";
             // 
             // tabPage2
             // 
@@ -338,7 +326,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button2;
