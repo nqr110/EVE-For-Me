@@ -50,7 +50,7 @@
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(0, 104);
+            button3.Location = new System.Drawing.Point(0, 100);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(120, 47);
             button3.TabIndex = 7;
@@ -60,7 +60,7 @@
             // 
             // button4
             // 
-            button4.Location = new System.Drawing.Point(0, 157);
+            button4.Location = new System.Drawing.Point(0, 150);
             button4.Name = "button4";
             button4.Size = new System.Drawing.Size(120, 47);
             button4.TabIndex = 8;
@@ -70,7 +70,7 @@
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(0, 52);
+            button2.Location = new System.Drawing.Point(0, 50);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(120, 47);
             button2.TabIndex = 10;
@@ -80,9 +80,9 @@
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(1, 1);
+            button1.Location = new System.Drawing.Point(0, 0);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(119, 47);
+            button1.Size = new System.Drawing.Size(120, 47);
             button1.TabIndex = 11;
             button1.Text = "主页";
             button1.UseVisualStyleBackColor = true;

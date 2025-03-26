@@ -38,37 +38,43 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new System.Drawing.Point(20, 67);
+            textBox1.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 134);
+            textBox1.Location = new System.Drawing.Point(20, 35);
             textBox1.Margin = new System.Windows.Forms.Padding(4);
             textBox1.Name = "textBox1";
-            textBox1.Size = new System.Drawing.Size(116, 23);
+            textBox1.Size = new System.Drawing.Size(190, 30);
             textBox1.TabIndex = 6;
+            textBox1.Text = "请在此处输入";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(341, 152);
+            label3.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Bold);
+            label3.Location = new System.Drawing.Point(135, 296);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(43, 17);
+            label3.Size = new System.Drawing.Size(75, 20);
             label3.TabIndex = 11;
             label3.Text = "label3";
+            label3.Click += label3_Click;
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(20, 144);
+            button1.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
+            button1.Location = new System.Drawing.Point(20, 97);
             button1.Margin = new System.Windows.Forms.Padding(4);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(88, 33);
+            button1.Size = new System.Drawing.Size(170, 40);
             button1.TabIndex = 8;
-            button1.Text = "本地查询";
+            button1.Text = "本地数据库查询";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(187, 144);
+            button2.Font = new System.Drawing.Font("微软雅黑", 15F);
+            button2.Location = new System.Drawing.Point(20, 219);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(88, 33);
+            button2.Size = new System.Drawing.Size(170, 49);
             button2.TabIndex = 9;
             button2.Text = "网络API查询";
             button2.UseVisualStyleBackColor = true;
@@ -77,19 +83,21 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(341, 73);
+            label2.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Bold);
+            label2.Location = new System.Drawing.Point(20, 296);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(43, 17);
+            label2.Size = new System.Drawing.Size(75, 20);
             label2.TabIndex = 10;
             label2.Text = "label2";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(187, 73);
+            label1.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Bold);
+            label1.Location = new System.Drawing.Point(20, 167);
             label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(23, 17);
+            label1.Size = new System.Drawing.Size(42, 20);
             label1.TabIndex = 7;
             label1.Text = "---";
             // 

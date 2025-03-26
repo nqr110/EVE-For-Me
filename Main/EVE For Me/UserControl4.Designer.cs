@@ -59,7 +59,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.BackColor = System.Drawing.Color.LightGray;
+            label1.BackColor = System.Drawing.Color.White;
             label1.Font = new System.Drawing.Font("楷体", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 134);
             label1.Location = new System.Drawing.Point(10, 10);
             label1.Name = "label1";
@@ -121,6 +121,7 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(140, 28);
             comboBox1.TabIndex = 6;
+            comboBox1.TabStop = false;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // label4
@@ -191,6 +192,7 @@
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new System.Drawing.Size(140, 28);
             comboBox2.TabIndex = 4;
+            comboBox2.TabStop = false;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
             // button3
@@ -257,6 +259,7 @@
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new System.Drawing.Size(140, 28);
             comboBox3.TabIndex = 4;
+            comboBox3.TabStop = false;
             // 
             // button1
             // 

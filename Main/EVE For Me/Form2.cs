@@ -30,15 +30,35 @@ namespace EVE_For_Me
         private readonly Form1 _form1;
         // 在类级别声明当前用户控件引用
         private UserControl currentUserControl;
+        private string _currentMode = "用户模式";
         // -------------------------------------------------------------------------------------
         // 通用的用户控件加载方法
+        private void Uc1_SelectedModeChanged(object sender, string mode)
+        {
+            _currentMode = mode;
+        }
         private void LoadUserControl<T>() where T : UserControl, new()
         {
+            // 清理旧控件事件
+            if (currentUserControl is UserControl1 oldUC1)
+            {
+                oldUC1.SelectedModeChanged -= Uc1_SelectedModeChanged;
+            }
+
             panel1.Controls.Clear();
 
             var control = new T();
             control.Dock = DockStyle.Fill;
             panel1.Controls.Add(control);
+
+            // 订阅新控件事件
+
+            // 订阅新控件事件
+            if (control is UserControl1 newUC1)
+            {
+                newUC1.SelectedModeChanged += Uc1_SelectedModeChanged;
+                _currentMode = newUC1.SelectedMode; // 使用公共属性
+            }
 
             currentUserControl?.Dispose(); // 释放之前的控件
             currentUserControl = control;
@@ -47,7 +67,14 @@ namespace EVE_For_Me
         // 左侧按钮控件切换
         private void button2_Click(object sender, EventArgs e)
         {
-            LoadUserControl<UserControl3>();
+            if (_currentMode == "用户模式")
+            {
+                LoadUserControl<UserControl3>();
+            }
+            else
+            {
+                LoadUserControl<UserControl5>();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -69,21 +96,6 @@ namespace EVE_For_Me
             // 调整控件层级顺序（确保panel1在panel2之后加载）
             Controls.SetChildIndex(panel1, 0);
             Controls.SetChildIndex(panel2, 1);
-
-            //// 设置按钮在panel2内的布局
-            //int buttonHeight = 50;
-            //int spacing = 10;
-            //foreach (System.Windows.Forms.Control ctrl in panel2.Controls)
-            //{
-            //    if (ctrl is Button btn)
-            //    {
-            //        btn.Height = buttonHeight;
-            //        btn.Dock = DockStyle.Top;
-            //        btn.BringToFront();
-            //    }
-            //}
-            //// 添加间隔（可选）
-            //panel2.Controls.Add(new Panel { Height = spacing, Dock = DockStyle.Top });
         }
 
         // -------------------------------------------------------------------------------------
