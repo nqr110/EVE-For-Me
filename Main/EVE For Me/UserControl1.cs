@@ -24,6 +24,7 @@ namespace EVE_For_Me
             //comboBox1.Items.AddRange(new object[] { "用户模式", "API调试模式" });
             comboBox1.SelectedIndex = 0;
             comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
+
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
