@@ -35,6 +35,10 @@
             button2 = new System.Windows.Forms.Button();
             button1 = new System.Windows.Forms.Button();
             panel2 = new System.Windows.Forms.Panel();
+            button5 = new System.Windows.Forms.Button();
+            button6 = new System.Windows.Forms.Button();
+            button7 = new System.Windows.Forms.Button();
+            button8 = new System.Windows.Forms.Button();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -90,6 +94,10 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(button8);
+            panel2.Controls.Add(button7);
+            panel2.Controls.Add(button6);
+            panel2.Controls.Add(button5);
             panel2.Controls.Add(button1);
             panel2.Controls.Add(button3);
             panel2.Controls.Add(button2);
@@ -99,6 +107,42 @@
             panel2.Size = new System.Drawing.Size(120, 556);
             panel2.TabIndex = 12;
             panel2.Paint += panel2_Paint;
+            // 
+            // button5
+            // 
+            button5.Location = new System.Drawing.Point(0, 200);
+            button5.Name = "button5";
+            button5.Size = new System.Drawing.Size(120, 47);
+            button5.TabIndex = 12;
+            button5.Text = "button5";
+            button5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            button6.Location = new System.Drawing.Point(0, 250);
+            button6.Name = "button6";
+            button6.Size = new System.Drawing.Size(120, 47);
+            button6.TabIndex = 13;
+            button6.Text = "button6";
+            button6.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            button7.Location = new System.Drawing.Point(0, 350);
+            button7.Name = "button7";
+            button7.Size = new System.Drawing.Size(120, 47);
+            button7.TabIndex = 14;
+            button7.Text = "button7";
+            button7.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            button8.Location = new System.Drawing.Point(0, 300);
+            button8.Name = "button8";
+            button8.Size = new System.Drawing.Size(120, 47);
+            button8.TabIndex = 15;
+            button8.Text = "button8";
+            button8.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
@@ -124,5 +168,9 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
     }
 }

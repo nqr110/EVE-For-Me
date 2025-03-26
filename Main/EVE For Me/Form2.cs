@@ -69,11 +69,11 @@ namespace EVE_For_Me
         {
             if (_currentMode == "用户模式")
             {
-                LoadUserControl<UserControl3>();
+                LoadUserControl<UserControl5>();
             }
             else
             {
-                LoadUserControl<UserControl5>();
+                LoadUserControl<UserControl3>();
             }
         }
 
@@ -90,10 +90,6 @@ namespace EVE_For_Me
             panel2.Dock = DockStyle.Left;
             panel2.BackColor = SystemColors.Control;
 
-            // 设置右侧内容面板属性
-            //panel1.Dock = DockStyle.Fill;
-            //panel1.BackColor = DrawColor.White;
-            // 调整控件层级顺序（确保panel1在panel2之后加载）
             Controls.SetChildIndex(panel1, 0);
             Controls.SetChildIndex(panel2, 1);
         }

@@ -32,6 +32,7 @@
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             comboBox1 = new System.Windows.Forms.ComboBox();
+            label4 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // label1
@@ -69,17 +70,28 @@
             comboBox1.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold);
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "用户模式", "API调试模式" });
-            comboBox1.Location = new System.Drawing.Point(12, 361);
+            comboBox1.Location = new System.Drawing.Point(12, 371);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(190, 36);
             comboBox1.TabIndex = 3;
             comboBox1.TabStop = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold);
+            label4.Location = new System.Drawing.Point(12, 340);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(177, 28);
+            label4.TabIndex = 4;
+            label4.Text = "EVE市场查询切换";
             // 
             // UserControl1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
+            Controls.Add(label4);
             Controls.Add(comboBox1);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -97,5 +109,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label4;
     }
 }
